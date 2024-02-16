@@ -77,7 +77,7 @@ class ClickHouseVectorStore(BasePydanticVectorStore):
     stores_text = True
     flat_metadata = False
     _table_existed: bool = PrivateAttr(default=False)
-    _client: Any = PrivateAttr(default=None)
+    _client: Any = PrivateAttr()
     _config: Any = PrivateAttr()
     _dim: Any = PrivateAttr()
     _column_config: Any = PrivateAttr()

@@ -14,6 +14,7 @@ from llama_index.core.vector_stores.types import (
     MetadataFilters,
     VectorStoreQuery,
     VectorStoreQueryMode,
+    BasePydanticVectorStore,
 )
 from llama_index.vector_stores.clickhouse import ClickHouseVectorStore
 
@@ -33,12 +34,17 @@ clickhouse_not_available = True
 
 try:
     client = clickhouse_connect.get_client(
-        host="localhost", port=8124, username="default", password=""
+        host="localhost", port=8123, username="default", password=""
     )
     client.ping()
     clickhouse_not_available = False
 except Exception:
     clickhouse_not_available = True
+
+
+def test_class():
+    names_of_base_classes = [b.__name__ for b in ClickHouseVectorStore.__mro__]
+    assert BasePydanticVectorStore.__name__ in names_of_base_classes
 
 
 @pytest.fixture()
@@ -52,7 +58,7 @@ def clickhouse_client() -> Generator:
     import clickhouse_connect
 
     clickhouse_client = clickhouse_connect.get_client(
-        host="localhost", port=8124, username="default", password=""
+        host="localhost", port=8123, username="default", password=""
     )
     clickhouse_client.command(f"DROP DATABASE IF EXISTS {TEST_DB}")
     clickhouse_client.command(f"CREATE DATABASE {TEST_DB}")
